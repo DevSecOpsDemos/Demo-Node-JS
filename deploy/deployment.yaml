@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsecops-demo
+spec:
+  selector:
+    matchLabels:
+      app: devsecops-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: devsecops-demo
+    spec:
+      containers:
+      - name: nodongo
+        image: "sachinpgade/devsecopsdemo:latest"
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: nodept
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: devsecops-demo
+  labels:
+    app: devsecops-demo
+spec:
+  ports:
+    - name: nodept
+      protocol: TCP
+      port: 80
+      targetPort: nodept
+  selector:
+    app: devsecops-demo
+  type: ClusterIP
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: devsecops-demo
+  labels:
+    app: devsecops-demo
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: demoapp.devsecopsdemos.xyz
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              serviceName: devsecops-demo
+              servicePort: 80
+
+
