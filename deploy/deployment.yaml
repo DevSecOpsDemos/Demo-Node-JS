@@ -49,6 +49,11 @@ metadata:
     kubernetes.io/ingress.class: nginx
   namespace: demo
 spec:
+  tls:
+  - hosts:
+      - demoapp.devsecopsdemos.xyz
+    secretName: demo-tls
+
   rules:
     - host: demoapp.devsecopsdemos.xyz
       http:
