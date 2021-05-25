@@ -46,6 +46,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
+  tls:
+  - hosts:
+      - demoapp.devsecopsdemos.xyz
+    secretName: demo-tls
+
   rules:
     - host: demoapp.devsecopsdemos.xyz
       http:
