@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: devsecops-demo
+  namespace: demo
 spec:
   selector:
     matchLabels:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nodongo
-        image: "sachinpgade/devsecopsdemo:latest"
+        image: "sachinpgade/devsecopsdemo:2.0.0"
         ports:
         - containerPort: 80
           protocol: TCP
@@ -26,6 +27,7 @@ metadata:
   name: devsecops-demo
   labels:
     app: devsecops-demo
+  namespace: demo
 spec:
   ports:
     - name: nodept
@@ -45,7 +47,13 @@ metadata:
     app: devsecops-demo
   annotations:
     kubernetes.io/ingress.class: nginx
+  namespace: demo
 spec:
+  tls:
+  - hosts:
+      - demoapp.devsecopsdemos.xyz
+    secretName: demo-tls
+
   rules:
     - host: demoapp.devsecopsdemos.xyz
       http:
