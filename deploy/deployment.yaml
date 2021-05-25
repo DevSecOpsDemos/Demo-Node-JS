@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: devsecops-demo
+  namespace: demo
 spec:
   selector:
     matchLabels:
@@ -26,6 +27,7 @@ metadata:
   name: devsecops-demo
   labels:
     app: devsecops-demo
+  namespace: demo
 spec:
   ports:
     - name: nodept
@@ -45,6 +47,7 @@ metadata:
     app: devsecops-demo
   annotations:
     kubernetes.io/ingress.class: nginx
+  namespace: demo
 spec:
   rules:
     - host: demoapp.devsecopsdemos.xyz
