@@ -3,7 +3,7 @@ var http = require('http');
 var server = http.createServer(function(request, response) {
 
     response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello DevOps SecOps Demo!");
+    response.end("Hello DevOps SecOps Demo! CI-CD Pipeline is now ready");
 
 });
 
