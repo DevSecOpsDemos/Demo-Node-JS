@@ -45,14 +45,14 @@ spec:
                 container(name: 'kaniko', shell: '/busybox/sh') {
                     sh ''' #!/busybox/sh
                     ls -al
-				    /kaniko/executor -f `pwd`/Dockerfile --context="dir:///home/jenkins/agent/workspace/KanikoPipeline/" --destination="sachinpgade/devsecopsdemo:2.0.0"
-				    '''
+                    /kaniko/executor -f `pwd`/Dockerfile --context="dir:///home/jenkins/agent/workspace/${JOB_NAME}/" --destination="sachinpgade/devsecopsdemo:2.0.0"
+                    '''
                 }
             }
         }
         stage('Deploy to GKE') {
             steps{
-		        container('kubectl') {
+                container('kubectl') {
                     sh 'ls -al'
                     step([$class: 'KubernetesEngineBuilder', projectId: 'devopsindiasummit', clusterName: 'demo-devsecops', location: 'us-central1-c', manifestPattern: 'deploy', credentialsId: 'devopsindiasummit', verifyDeployments: true])
                 }       
