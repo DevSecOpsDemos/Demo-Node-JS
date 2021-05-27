@@ -18,6 +18,11 @@ spec:
     volumeMounts:
     - name: kaniko-secret
       mountPath: /kaniko/.docker
+  - name: nodeforsq
+    image: sonarsource/sonar-scanner-cli
+    command:
+    - cat
+    tty: true
   - name: shell
     image: ubuntu
     command:
@@ -43,11 +48,19 @@ spec:
     stages {
         stage("Checkout code") {
             steps {
-                git credentialsId: 'git_id', url: 'https://github.com/DevSecOpsDemos/Demo-Node-JS.git'
+                git branch: 'master', credentialsId: 'git_id', url: 'https://github.com/DevSecOpsDemos/Demo-Node-JS.git'
             }
         }
         
-        stage("Build ") {
+        stage('SonarQube analysis') {
+            steps{
+                container('nodeforsq'){
+                    sh 'sonar-scanner -Dsonar.host.url=http://sonarqube.devsecopsdemos.xyz'
+                }  
+            }
+        }
+        
+        stage("Build") {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh') {
                     sh ''' #!/busybox/sh
